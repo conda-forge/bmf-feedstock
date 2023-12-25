@@ -32,9 +32,10 @@ build:
     - "*/_hmp.*"        # [win]
     - "*/libcuda.so.1"  # [linux]
   script_env:
-    - BMF_BUILD_ENABLE_CUDA=OFF  # [cuda_compiler_version == "None"]
-    - BMF_BUILD_ENABLE_CUDA=ON   # [cuda_compiler_version != "None"]
-    - GIT_SHA="{{ commit }}"
+    - BMF_BUILD_ENABLE_CUDA=OFF                          # [cuda_compiler_version == "None"]
+    - BMF_BUILD_ENABLE_CUDA=ON                           # [cuda_compiler_version != "None"]
+    - CUDA_COMPILER_VERSION={{ cuda_compiler_version }}  # [cuda_compiler_version != "None"]
+    - GIT_SHA={{ commit }}
 
 requirements:
   build:
