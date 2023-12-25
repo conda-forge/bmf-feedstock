@@ -1,7 +1,17 @@
 set -x
 
+if [[ "${target_platform}" != "${build_platform}" ]]; then
+    # PyBind11 will find python3.X which returns a different
+    # value for the "EXT_SUFFIX" which is inconsistent with
+    # cross compilation
+    # https://github.com/conda-forge/cross-python-feedstock/issues/75
+    Python_EXECUTABLE=${BUILD_PREFIX}/bin/python
+else
+    Python_EXECUTABLE=${PYTHON}
+fi
+
 export CMAKE_GENERATOR=Ninja
-export CMAKE_ARGS="${CMAKE_ARGS} -DBMF_LOCAL_DEPENDENCIES=OFF -DBMF_ENABLE_CUDA=${BMF_BUILD_ENABLE_CUDA}"
+export CMAKE_ARGS="${CMAKE_ARGS} -DBMF_LOCAL_DEPENDENCIES=OFF -DBMF_ENABLE_CUDA=${BMF_BUILD_ENABLE_CUDA} -DPython_EXECUTABLE=${Python_EXECUTABLE}"
 "$PYTHON" -m pip install -v .
 
 cd $PREFIX/lib/python${PY_VER}/site-packages/bmf
