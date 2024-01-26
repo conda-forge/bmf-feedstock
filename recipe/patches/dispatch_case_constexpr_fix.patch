@@ -1,5 +1,63 @@
+diff --git a/bmf/hml/src/kernel/cpu/imgproc.cpp b/bmf/hml/src/kernel/cpu/imgproc.cpp
+index a441a87..afd7d6f 100644
+--- a/bmf/hml/src/kernel/cpu/imgproc.cpp
++++ b/bmf/hml/src/kernel/cpu/imgproc.cpp
+@@ -358,10 +358,10 @@ Tensor &img_normalize_cpu(Tensor &dst, const Tensor &src, const Tensor &mean,
+                                     using itype = Vector<iscalar_t, C::size()>;
+                                     using otype = Vector<oscalar_t, C::size()>;
+                                     auto src_iter =
+-                                        ImageSeqIter<itype, FMT>::from_tensor(
++                                        ImageSeqIter<itype, ChannelFormatConstant>::from_tensor(
+                                             src, cformat);
+                                     auto dst_iter =
+-                                        ImageSeqIter<otype, FMT>::from_tensor(
++                                        ImageSeqIter<otype, ChannelFormatConstant>::from_tensor(
+                                             dst, cformat);
+                                     auto fmean_ptr = fmean.data<float>();
+                                     auto fmean_stride = fmean.stride(0);
+diff --git a/bmf/hml/src/kernel/cuda/imgproc.cu b/bmf/hml/src/kernel/cuda/imgproc.cu
+index efc4cb8..df21e60 100644
+--- a/bmf/hml/src/kernel/cuda/imgproc.cu
++++ b/bmf/hml/src/kernel/cuda/imgproc.cu
+@@ -332,8 +332,8 @@ Tensor& img_normalize_cuda(Tensor &dst, const Tensor &src, const Tensor &mean, c
+                 HMP_DISPATCH_IMAGE_CHANNEL(channel, "img_normalize_cuda", [&](){
+                     using itype = Vector<iscalar_t, C::size()>;
+                     using otype = Vector<oscalar_t, C::size()>;
+-                    auto src_iter = ImageSeqIter<itype, FMT>::from_tensor(src, cformat);
+-                    auto dst_iter = ImageSeqIter<otype, FMT>::from_tensor(dst, cformat);
++                    auto src_iter = ImageSeqIter<itype, ChannelFormatConstant>::from_tensor(src, cformat);
++                    auto dst_iter = ImageSeqIter<otype, ChannelFormatConstant>::from_tensor(dst, cformat);
+                     auto fmean_ptr = fmean.data<float>();
+                     auto fmean_stride = fmean.stride(0);
+                     auto fstd_ptr = fstd.data<float>();
+diff --git a/bmf/hml/src/kernel/cv2/imgproc_cuda.cu b/bmf/hml/src/kernel/cv2/imgproc_cuda.cu
+index 14ea393..76ddf40 100644
+--- a/bmf/hml/src/kernel/cv2/imgproc_cuda.cu
++++ b/bmf/hml/src/kernel/cv2/imgproc_cuda.cu
+@@ -19,8 +19,8 @@ Tensor &img_pixel_max_cuda(Tensor &dst, const Tensor &src, ChannelFormat cformat
+             using dtype = Vector<scalar_t, 1>;
+ 
+             HMP_DISPATCH_CHANNEL_FORMAT(cformat, "img_pxiel_max_cuda", [&](){
+-                using SIter = ImageSeqIter<stype, FMT>;
+-                using DIter = ImageSeqIter<dtype, FMT>;
++                using SIter = ImageSeqIter<stype, ChannelFormatConstant>;
++                using DIter = ImageSeqIter<dtype, ChannelFormatConstant>;
+                 auto src_iter = SIter::from_tensor(src, cformat);
+                 auto dst_iter = DIter::from_tensor(dst, cformat);
+ 
+@@ -53,8 +53,8 @@ Tensor &img_pixel_mean_cuda(Tensor &dst, const Tensor &src, ChannelFormat cforma
+             using dtype = Vector<scalar_t, 1>;
+ 
+             HMP_DISPATCH_CHANNEL_FORMAT(cformat, "img_pxiel_max_cuda", [&](){
+-                using SIter = ImageSeqIter<stype, FMT>;
+-                using DIter = ImageSeqIter<dtype, FMT>;
++                using SIter = ImageSeqIter<stype, ChannelFormatConstant>;
++                using DIter = ImageSeqIter<dtype, ChannelFormatConstant>;
+                 auto src_iter = SIter::from_tensor(src, cformat);
+                 auto dst_iter = DIter::from_tensor(dst, cformat);
+ 
 diff --git a/bmf/hml/src/kernel/image_iter.h b/bmf/hml/src/kernel/image_iter.h
-index ba08aa9..9b2d9a3 100644
+index ba08aa9..116d71c 100644
 --- a/bmf/hml/src/kernel/image_iter.h
 +++ b/bmf/hml/src/kernel/image_iter.h
 @@ -446,7 +446,7 @@ struct YUVIter<
@@ -7,7 +65,7 @@ index ba08aa9..9b2d9a3 100644
  #define HMP_CHANNEL_FORMAT_DISPATCH_CASE(Format, ...)                          \
      case (Format): {                                                           \
 -        const auto FMT = Format;                                               \
-+        constexpr ChannelFormat FMT = Format;                                  \
++        constexpr ChannelFormat ChannelFormatConstant = Format;                \
          return __VA_ARGS__();                                                  \
      }
  
