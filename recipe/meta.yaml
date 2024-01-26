@@ -18,9 +18,9 @@ source:
       - patches/Make_CMake_standard_requirement_optional.patch
       # Windows library are under binary dir
       - patches/search_library_in_binary_dir.patch  # [win]
-  - url: https://github.com/BabitMF/bmf/releases/download/files/win_rootfs.tar.gz  #[win]
-    sha256: 6ab8e8df127c5d54b6c64f9ae4f4680f012f0b3b916e4f003e00963399580367  #[win]
-    folder: win_rootfs  #[win]
+  - url: https://github.com/BabitMF/bmf/releases/download/files/win_rootfs.tar.gz  # [win]
+    sha256: 6ab8e8df127c5d54b6c64f9ae4f4680f012f0b3b916e4f003e00963399580367  # [win]
+    folder: win_rootfs  # [win]
 
 build:
   number: {{ build }}
