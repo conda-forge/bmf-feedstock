@@ -7,7 +7,7 @@ index ba08aa9..9b2d9a3 100644
  #define HMP_CHANNEL_FORMAT_DISPATCH_CASE(Format, ...)                          \
      case (Format): {                                                           \
 -        const auto FMT = Format;                                               \
-+        constexpr auto FMT = Format;                                           \
++        constexpr ChannelFormat FMT = Format;                                  \
          return __VA_ARGS__();                                                  \
      }
  
