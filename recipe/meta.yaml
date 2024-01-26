@@ -94,9 +94,9 @@ test:
     - api_test.py
     - test_graph.json
     # Stub library. See nvcuda_stub.cpp for source.
-    - nvcuda.dll  # [win]
+    - nvcuda.dll  # [win and cuda_compiler_version != "None"]
   commands:
-    - COPY nvcuda.dll %LIBRARY_BIN%\nvcuda.dll  # [win]
+    - COPY nvcuda.dll %LIBRARY_BIN%\nvcuda.dll  # [win and cuda_compiler_version != "None"]
     - pip check
     - module_manager list
     - module_manager dump c_ffmpeg_decoder
