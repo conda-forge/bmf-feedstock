@@ -4,6 +4,9 @@ set CMAKE_GENERATOR_PLATFORM=
 set CMAKE_GENERATOR_TOOLSET=
 set CMAKE_PLAT=
 
+RMDIR /S /Q win_rootfs\x64\usr\include\openssl
+DEL /Q win_rootfs\x64\usr\include\dlfcn.h
+set INCLUDE=%INCLUDE%;%CD%\win_rootfs\x64\usr\include;
 set CMAKE_ARGS=%CMAKE_ARGS% -DBMF_LOCAL_DEPENDENCIES=OFF -DPython_EXECUTABLE=%PYTHON% -DBMF_ENABLE_CUDA=%BMF_BUILD_ENABLE_CUDA% -DHMP_CUDA_ARCH_FLAGS=50-real;52-real;60-real;61-real;70-real;75-real;80-real;86-real;90
 "%PYTHON%" -m pip install -v .
 if %ERRORLEVEL% neq 0 exit 1

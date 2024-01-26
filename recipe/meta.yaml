@@ -9,15 +9,18 @@ package:
   version: {{ version }}
 
 source:
-  url: https://github.com/BabitMF/bmf/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: 9d24fc909a626730518dc8f9f4dc02d76345ea38445166b116b3f10ef9adb691
-  patches:
-    # we don't need the python command wrapper
-    - patches/dont_install_commands.patch
-    # make standard requirement optional to build with CUDA 11
-    - patches/Make_CMake_standard_requirement_optional.patch
-    # Windows library are under binary dir
-    - patches/search_library_in_binary_dir.patch  # [win]
+  - url: https://github.com/BabitMF/bmf/archive/refs/tags/v{{ version }}.tar.gz
+    sha256: 9d24fc909a626730518dc8f9f4dc02d76345ea38445166b116b3f10ef9adb691
+    patches:
+      # we don't need the python command wrapper
+      - patches/dont_install_commands.patch
+      # make standard requirement optional to build with CUDA 11
+      - patches/Make_CMake_standard_requirement_optional.patch
+      # Windows library are under binary dir
+      - patches/search_library_in_binary_dir.patch  # [win]
+  - url: https://github.com/BabitMF/bmf/releases/download/files/win_rootfs.tar.gz  #[win]
+    sha256: 6ab8e8df127c5d54b6c64f9ae4f4680f012f0b3b916e4f003e00963399580367  #[win]
+    folder: win_rootfs  #[win]
 
 build:
   number: {{ build }}
