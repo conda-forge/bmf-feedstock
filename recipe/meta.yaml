@@ -29,7 +29,6 @@ source:
 
 build:
   number: {{ build }}
-  skip: true  # [not win]
   string: cuda{{ cuda_compiler_version | replace('.', '') }}_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != "None"]
   string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == "None"]
   ignore_run_exports:
@@ -97,7 +96,7 @@ test:
     - cuda-compat  # [linux]
     {% endif %}
   imports:
-    # CUDA version cannot be tested here because we haven't plant our nvcuda.dll stub library.
+    # CUDA version cannot be tested here because we haven't planted our nvcuda.dll stub library.
     - bmf  # [cuda_compiler_version == "None"]
   files:
     - api_test.py
