@@ -97,7 +97,8 @@ test:
     - cuda-compat  # [linux]
     {% endif %}
   imports:
-    - bmf
+    # CUDA version cannot be tested here because we haven't plant our nvcuda.dll stub library.
+    - bmf  # [cuda_compiler_version == "None"]
   files:
     - api_test.py
     - test_graph.json
