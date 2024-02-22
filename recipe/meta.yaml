@@ -23,9 +23,9 @@ source:
   - url: https://github.com/BabitMF/bmf/releases/download/files/win_rootfs.tar.gz  # [win]
     sha256: 6ab8e8df127c5d54b6c64f9ae4f4680f012f0b3b916e4f003e00963399580367  # [win]
     folder: win_rootfs  # [win]
-    patches:
+    patches:  # [win]
       # don't let windows.h define MIN and MAX macro
-      - patches/win32_unistd_nominmax.patch
+      - patches/win32_unistd_nominmax.patch  # [win]
 
 build:
   number: {{ build }}
