@@ -29,7 +29,9 @@ source:
 
 build:
   number: {{ build }}
-  skip: True  # [cuda_major == "11" and (aarch64 or ppc64le)]
+  {% if cuda_major == "11" %}
+  skip: True  # [linux and (aarch64 or ppc64le)]
+  {% endif %}
   string: cuda{{ cuda_compiler_version | replace('.', '') }}_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != "None"]
   string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == "None"]
   ignore_run_exports:
