@@ -7,9 +7,9 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cuda_compiler:
-- None
+- cuda-nvcc
 cuda_compiler_version:
-- None
+- '12.6'
 cxx_compiler:
 - vs2019
 glog:
@@ -29,4 +29,3 @@ zip_keys:
   - cuda_compiler_version
 - - python
   - numpy
-  - channel_sources
