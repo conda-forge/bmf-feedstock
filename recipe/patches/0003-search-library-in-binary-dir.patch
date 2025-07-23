@@ -1,0 +1,22 @@
+From 20959f05c02046e5abbe47a4e2a24c401ab910cd Mon Sep 17 00:00:00 2001
+From: Yuan Tong <tongyuan.gen@bytedance.com>
+Date: Mon, 27 Nov 2023 10:55:40 +0800
+Subject: [PATCH 3/3] search library in binary dir
+
+---
+ bmf/sdk/cpp_sdk/include/bmf/sdk/shared_library.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/bmf/sdk/cpp_sdk/include/bmf/sdk/shared_library.h b/bmf/sdk/cpp_sdk/include/bmf/sdk/shared_library.h
+index 85716a9..5beb47d 100644
+--- a/bmf/sdk/cpp_sdk/include/bmf/sdk/shared_library.h
++++ b/bmf/sdk/cpp_sdk/include/bmf/sdk/shared_library.h
+@@ -100,7 +100,7 @@ class BMF_SDK_API SharedLibrary {
+ #elif defined(__APPLE__)
+         return "lib";
+ #elif defined(__MINGW32__) || defined(_WIN32)
+-        return "lib";
++        return "bin";
+ #else
+ #error "unsupported os"
+ #endif

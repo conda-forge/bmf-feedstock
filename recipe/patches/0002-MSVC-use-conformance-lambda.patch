@@ -1,0 +1,26 @@
+From dd4959a8f4b7e0a191ee7a8f721be6ccee947c43 Mon Sep 17 00:00:00 2001
+From: Yuan Tong <tongyuan.gen@bytedance.com>
+Date: Thu, 12 Sep 2024 11:24:58 +0800
+Subject: [PATCH 2/3] MSVC: use conformance lambda
+
+---
+ CMakeLists.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 80bda99..c24f3a4 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -98,10 +98,10 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+ 
+     # C4576: a parenthesized type followed by an initializer list is a non-standard explicit type conversion syntax
+     # Used in FFmpeg macros which assumes C.
+-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zc:preprocessor /wd4068 /wd4576")
++    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zc:preprocessor /Zc:lambda /wd4068 /wd4576")
+     add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+     if (BMF_ENABLE_CUDA)
+-        set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -Xcompiler=/Zc:preprocessor")
++        set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -Xcompiler=/Zc:preprocessor -Xcompiler=/Zc:lambda")
+     endif()
+ endif()
+ 

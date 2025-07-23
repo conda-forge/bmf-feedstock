@@ -13,9 +13,9 @@ source:
       # we don't need the python command wrapper
       - patches/0001-don-t-install-commands.patch
       # Dispatch case uses constexpr
-      - patches/0003-MSVC-use-conformance-lambda.patch      # [win]
+      - patches/0002-MSVC-use-conformance-lambda.patch      # [win]
       # Windows library are under binary dir
-      - patches/0004-search-library-in-binary-dir.patch     # [win]
+      - patches/0003-search-library-in-binary-dir.patch     # [win]
   - url: https://github.com/BabitMF/bmf/releases/download/files/win_rootfs.tar.gz  # [win]
     sha256: 6ab8e8df127c5d54b6c64f9ae4f4680f012f0b3b916e4f003e00963399580367  # [win]
     folder: win_rootfs  # [win]
