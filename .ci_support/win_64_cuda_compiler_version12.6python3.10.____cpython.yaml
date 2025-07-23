@@ -12,6 +12,10 @@ cuda_compiler_version:
 - '12.6'
 cxx_compiler:
 - vs2022
+ffmpeg:
+- '7'
+fmt:
+- '11.2'
 glog:
 - '0.7'
 numpy:
@@ -22,5 +26,7 @@ pin_run_as_build:
     max_pin: x.x
 python:
 - 3.10.* *_cpython
+spdlog:
+- '1.15'
 target_platform:
 - win-64
