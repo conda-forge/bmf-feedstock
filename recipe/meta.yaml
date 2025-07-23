@@ -13,8 +13,6 @@ source:
     patches:
       # we don't need the python command wrapper
       - patches/0001-don-t-install-commands.patch
-      # make standard requirement optional to build with CUDA 11
-      - patches/0002-relax-CXX-standard-requirement.patch
       # Dispatch case uses constexpr
       - patches/0003-MSVC-use-conformance-lambda.patch      # [win]
       # Windows library are under binary dir
