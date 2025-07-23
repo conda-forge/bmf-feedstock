@@ -16,6 +16,8 @@ source:
       - patches/0002-MSVC-use-conformance-lambda.patch      # [win]
       # Windows library are under binary dir
       - patches/0003-search-library-in-binary-dir.patch     # [win]
+      # backport https://github.com/BabitMF/bmf/pull/174
+      - patches/0004-add-fmt-v10-and-v11-support.patch
   - url: https://github.com/BabitMF/bmf/releases/download/files/win_rootfs.tar.gz  # [win]
     sha256: 6ab8e8df127c5d54b6c64f9ae4f4680f012f0b3b916e4f003e00963399580367  # [win]
     folder: win_rootfs  # [win]

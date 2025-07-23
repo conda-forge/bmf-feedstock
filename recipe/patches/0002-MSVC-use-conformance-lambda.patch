@@ -1,7 +1,7 @@
 From dd4959a8f4b7e0a191ee7a8f721be6ccee947c43 Mon Sep 17 00:00:00 2001
 From: Yuan Tong <tongyuan.gen@bytedance.com>
 Date: Thu, 12 Sep 2024 11:24:58 +0800
-Subject: [PATCH 2/3] MSVC: use conformance lambda
+Subject: [PATCH 2/4] MSVC: use conformance lambda
 
 ---
  CMakeLists.txt | 4 ++--
