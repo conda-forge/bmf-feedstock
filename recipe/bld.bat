@@ -1,5 +1,4 @@
 : Use Ninja Generator
-SET CMAKE_GEN=Ninja
 SET CMAKE_GENERATOR=Ninja
 SET CMAKE_GENERATOR_PLATFORM=
 SET CMAKE_GENERATOR_TOOLSET=
@@ -11,23 +10,16 @@ DEL /Q win_rootfs\x64\usr\include\dlfcn.h
 SET INCLUDE=%INCLUDE%;%CD%\win_rootfs\x64\usr\include;
 
 : Setup CUDA Architectures
-IF "%CUDA_COMPILER_VERSION%" == "11.2" (
-    GOTO CUDA_SET_ARCH_11_2
-) ELSE IF "%CUDA_COMPILER_VERSION%" == "11.8" (
-    GOTO CUDA_SET_ARCH_11_8
-) ELSE IF "%CUDA_COMPILER_VERSION%" == "12.0" (
-    GOTO CUDA_SET_ARCH_12_0
-) ELSE (
-    GOTO CUDA_SET_ARCH_ALL
+IF NOT "%CUDA_COMPILER_VERSION%" == "None" (
+    IF "%CUDA_COMPILER_VERSION%" == "12.6" (
+        GOTO CUDA_SET_ARCH_12_6
+    ) ELSE (
+        ECHO "Unsupported CUDA compiler version. Edit bld.bat to add target CUDA archs."
+        EXIT /b 1
+    )
 )
 
-:CUDA_SET_ARCH_11_2
-SET CUDA_ARCHS_LIST=35-real;37-real;50-real;52-real;60-real;61-real;70-real;75-real;80-real;86
-GOTO CUDA_SET_ARCH_END
-:CUDA_SET_ARCH_11_8
-SET CUDA_ARCHS_LIST=35-real;37-real;50-real;52-real;60-real;61-real;70-real;75-real;80-real;86-real;90
-GOTO CUDA_SET_ARCH_END
-:CUDA_SET_ARCH_12_0
+:CUDA_SET_ARCH_12_6
 SET CUDA_ARCHS_LIST=50-real;52-real;60-real;61-real;70-real;75-real;80-real;86-real;90
 GOTO CUDA_SET_ARCH_END
 :CUDA_SET_ARCH_ALL

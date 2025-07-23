@@ -1,25 +1,23 @@
-{% set name = "bmf" %}
-{% set cuda_major = (cuda_compiler_version|default("0.0")).split(".")[0] %}
-{% set version = "0.0.11" %}
-{% set commit = "10fde57672d125cf3a5eac7d9b30b924e4603d28" %}
-{% set build = 1 %}
+{% set version = "0.1.0" %}
+{% set commit = "333a00e0a8cb7992622b8a6d07fc1022bbb88589" %}
+{% set build = 0 %}
 
 package:
-  name: {{ name|lower }}
+  name: bmf
   version: {{ version }}
 
 source:
   - url: https://github.com/BabitMF/bmf/archive/refs/tags/v{{ version }}.tar.gz
-    sha256: 1dde6b10c506d77dea39fc3eb18a6566c960c0fc6366578c836ba54ab92422fd
+    sha256: 6da94b6df9d14718e8d70146a070c8fb5d0992f9daa11079758c30ad0ee3f89a
     patches:
       # we don't need the python command wrapper
-      - patches/dont_install_commands.patch
-      # make standard requirement optional to build with CUDA 11
-      - patches/relax_cxx_standard_requirement.patch
+      - patches/0001-don-t-install-commands.patch
       # Dispatch case uses constexpr
-      - patches/msvc_use_conformance_lambda.patch  # [win]
+      - patches/0002-MSVC-use-conformance-lambda.patch      # [win]
       # Windows library are under binary dir
-      - patches/search_library_in_binary_dir.patch  # [win]
+      - patches/0003-search-library-in-binary-dir.patch     # [win]
+      # backport https://github.com/BabitMF/bmf/pull/174
+      - patches/0004-add-fmt-v10-and-v11-support.patch
   - url: https://github.com/BabitMF/bmf/releases/download/files/win_rootfs.tar.gz  # [win]
     sha256: 6ab8e8df127c5d54b6c64f9ae4f4680f012f0b3b916e4f003e00963399580367  # [win]
     folder: win_rootfs  # [win]
@@ -29,9 +27,8 @@ source:
 
 build:
   number: {{ build }}
-  {% if cuda_major == "11" %}
-  skip: true  # [linux and (aarch64 or ppc64le)]
-  {% endif %}
+  # CUDA 12.5 dropped ppc support
+  skip: true  # [ppc64le and cuda_compiler_version != "None"]
   string: cuda{{ cuda_compiler_version | replace('.', '') }}_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != "None"]
   string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == "None"]
   ignore_run_exports:
@@ -44,7 +41,6 @@ build:
   script_env:
     - BMF_BUILD_ENABLE_CUDA=OFF                          # [cuda_compiler_version == "None"]
     - BMF_BUILD_ENABLE_CUDA=ON                           # [cuda_compiler_version != "None"]
-    - CUDA_COMPILER_VERSION={{ cuda_compiler_version }}  # [cuda_compiler_version != "None"]
     - GIT_SHA={{ commit }}
 
 requirements:
@@ -63,20 +59,18 @@ requirements:
     - m2-patch  # [win]
     - patchelf  # [linux]
   host:
-    - cuda-version  {{ cuda_compiler_version }}  # [cuda_compiler_version != "None"]
-    {% if cuda_major == "12" %}
+    {% if cuda_compiler_version != "None" %}
+    - cuda-version  {{ cuda_compiler_version }}
     - cuda-cudart-dev
     - cuda-compat                                # [linux]
-    {% else %}
-    - cudatoolkit                                # [cuda_compiler_version != "None"]
     {% endif %}
-    - ffmpeg  =4.4
+    - ffmpeg
     - nlohmann_json
     - glog
     - gtest
-    - fmt  =7
+    - fmt
     - benchmark
-    - spdlog  =1.8
+    - spdlog
     - backward-cpp
     - pybind11
     - dlpack
@@ -96,9 +90,7 @@ test:
   requires:
     - pip
     # To provide the CUDA driver library
-    {% if cuda_major == "12" %}
-    - cuda-compat  # [linux]
-    {% endif %}
+    - cuda-compat  # [linux and cuda_compiler_version != "None"]
   imports:
     # CUDA version cannot be tested here because we haven't planted our nvcuda.dll stub library.
     - bmf  # [cuda_compiler_version == "None"]

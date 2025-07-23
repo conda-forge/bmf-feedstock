@@ -11,18 +11,13 @@ else
 fi
 
 # Exclude Jetson architectures for non-ARM platform, because we know they will never be utilized.
-if [[ "$target_platform" == linux-aarch64 ]]; then
-    CUDA_ARCHS_LIST=all
-elif [[ "$target_platform" == linux-ppc64le ]]; then
-    CUDA_ARCHS_LIST="60-real;70"
-elif [[ "$CUDA_COMPILER_VERSION" == "11.2" ]]; then
-    CUDA_ARCHS_LIST="35-real;37-real;50-real;52-real;60-real;61-real;70-real;75-real;80-real;86"
-elif [[ "$CUDA_COMPILER_VERSION" == "11.8" ]]; then
-    CUDA_ARCHS_LIST="35-real;37-real;50-real;52-real;60-real;61-real;70-real;75-real;80-real;86-real;90"
-elif [[ "$CUDA_COMPILER_VERSION" == "12.0" ]]; then
-    CUDA_ARCHS_LIST="50-real;52-real;60-real;61-real;70-real;75-real;80-real;86-real;90"
-else
-    CUDA_ARCHS_LIST=all
+if [[ "$cuda_compiler_version" != "None" ]]; then
+    if [[ "$cuda_compiler_version" == "12.6" ]]; then
+        CUDA_ARCHS_LIST="50-real;52-real;60-real;61-real;70-real;75-real;80-real;86-real;90"
+    else
+        echo "Unsupported CUDA compiler version. Edit build.sh to add target CUDA archs."
+        exit 1
+    fi
 fi
 
 export CMAKE_GENERATOR=Ninja
