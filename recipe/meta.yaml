@@ -60,13 +60,13 @@ requirements:
     - cuda-cudart-dev
     - cuda-compat                                # [linux]
     {% endif %}
-    - ffmpeg  =4.4
+    - ffmpeg
     - nlohmann_json
     - glog
     - gtest
-    - fmt  =7
+    - fmt
     - benchmark
-    - spdlog  =1.8
+    - spdlog
     - backward-cpp
     - pybind11
     - dlpack
